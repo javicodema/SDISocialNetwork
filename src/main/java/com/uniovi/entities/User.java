@@ -16,7 +16,7 @@ public class User {
 	@Id
 	@GeneratedValue
 	private long id;
-	@Column(unique = true)
+//	@Column(unique = true)
 	private String username;
 	private String name;
 	private String lastName;
@@ -25,8 +25,8 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Set<Post> posts;
+	/*@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Post> posts;*/
 
 	public User(String username, String name, String lastName) {
 		super();
@@ -70,13 +70,13 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public void setPosts(Set<Post> posts) {
+	/*public void setPosts(Set<Post> posts) {
 		this.posts = posts;
 	}
 
 	public Set<Post> Post() {
 		return posts;
-	}
+	}*/
 
 	public String getFullName() {
 		return this.name + " " + this.lastName;
