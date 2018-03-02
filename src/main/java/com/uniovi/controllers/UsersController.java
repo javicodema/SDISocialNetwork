@@ -40,7 +40,7 @@ public class UsersController {
 		} else {
 			users = usersService.getUsers(pageable);
 		}
-		model.addAttribute("markList", users.getContent());
+		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
 		return "user/list";
 	}

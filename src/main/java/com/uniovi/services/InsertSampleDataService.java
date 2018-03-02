@@ -29,5 +29,20 @@ public class InsertSampleDataService {
 		User user5 = new User("Dromir@gmail.com", "David", "Ferreiro");
 		user5.setPassword("123456");
 		usersService.addUser(user5);
+		User user6 = new User("Javier@gmail.com", "Javier", "Díez");
+		user6.setPassword("123456");
+		usersService.addUser(user6);
+		User user7 = new User("Alejandro@gmail.com", "Alejandro", "González");
+		user7.setPassword("123456");
+		usersService.addUser(user7);
+		User user8 = new User("Daniel@gmail.com", "Daniel", "Martín");
+		user8.setPassword("123456");
+		usersService.addUser(user8);
+		User user9 = new User("Julio@gmail.com", "Julio", "Hernánez");
+		user9.setPassword("123456");
+		usersService.addUser(user9);
+		User user10 = new User("Miguel@gmail.com", "Miguel", "Sánchez");
+		user10.setPassword("123456");
+		usersService.addUser(user10);
 	}
 }
