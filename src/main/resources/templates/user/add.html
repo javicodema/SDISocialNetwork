@@ -8,21 +8,21 @@
 		<h2>Agregar usuario</h2>
 		<form class="form-horizontal" method="post" action="/user/add">
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="username">Username:</label>
+				<label class="control-label col-sm-2" for="email">Email:</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" name="username"
-						placeholder="99999999Y" required="true" />
+					<input type="text" class="form-control" name="email"
+						placeholder="prueba@servidorCorreo.es" required="true" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="name">Nombre:</label>
+				<label class="control-label col-sm-2" for="name" th:text="#{name.message}">Nombre:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="name"
 						placeholder="Ejemplo: Juan" required="true" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="lastName">Apellidos:</label>
+				<label class="control-label col-sm-2" for="lastName" th:text="#{surname.message}">Apellidos:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="lastName"
 						placeholder="Ejemplo: Peréz Almonte" required="true" />
@@ -30,7 +30,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Enviar</button>
+					<button type="submit" class="btn btn-primary" th:text="#{submit.message}">Enviar</button>
 				</div>
 			</div>
 		</form>
