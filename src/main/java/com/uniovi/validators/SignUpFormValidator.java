@@ -1,10 +1,13 @@
 package com.uniovi.validators;
 
-import com.uniovi.entities.User;
-import com.uniovi.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.*;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
+import com.uniovi.entities.User;
+import com.uniovi.services.UsersService;
 
 @Component
 public class SignUpFormValidator implements Validator {
@@ -19,12 +22,12 @@ public class SignUpFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Error.empty");
-		if (user.getUsername().length() < 5 || user.getUsername().length() > 24) {
-			errors.rejectValue("dni", "Error.signup.username.length");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
+		if (user.getEmail().length() < 5 || user.getEmail().length() > 24) {
+			errors.rejectValue("email", "Error.signup.username.length");
 		}
-		if (usersService.getUserByUsername(user.getUsername()) != null) {
-			errors.rejectValue("dni", "Error.signup.username.duplicate");
+		if (usersService.getUserByUsername(user.getEmail()) != null) {
+			errors.rejectValue("email", "Error.signup.username.duplicate");
 		}
 		if (user.getName().length() < 5 || user.getName().length() > 24) {
 			errors.rejectValue("name", "Error.signup.name.length");
