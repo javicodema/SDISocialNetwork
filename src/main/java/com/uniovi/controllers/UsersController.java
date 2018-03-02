@@ -1,6 +1,11 @@
 package com.uniovi.controllers;
 
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uniovi.entities.User;
 import com.uniovi.services.SecurityService;
@@ -26,14 +32,22 @@ public class UsersController {
 	private SignUpFormValidator signUpFormValidator;
 
 	@RequestMapping("/user/list")
-	public String getListado(Model model) {
-		model.addAttribute("usersList", usersService.getUsers());
+	public String getListado(Model model, Pageable pageable,
+			@RequestParam(value = "", required = false) String searchText) {
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		if (searchText != null && !searchText.isEmpty()) {
+			users = usersService.searchUsersByEmailAndName(pageable, searchText);
+		} else {
+			users = usersService.getUsers(pageable);
+		}
+		model.addAttribute("markList", users.getContent());
+		model.addAttribute("page", users);
 		return "user/list";
 	}
 
 	@RequestMapping(value = "/user/add")
-	public String getUser(Model model) {
-		model.addAttribute("usersList", usersService.getUsers());
+	public String getUser(Model model, Pageable pageable) {
+		model.addAttribute("usersList", usersService.getUsers(pageable));
 		return "user/add";
 	}
 
@@ -70,15 +84,14 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String signup(@Validated User user, BindingResult result, Model
-			model) {
+	public String signup(@Validated User user, BindingResult result, Model model) {
 		signUpFormValidator.validate(user, result);
 		if (result.hasErrors()) {
-		return "signup";
+			return "signup";
 		}
 		usersService.addUser(user);
-		securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
-		 return "redirect:home";
+		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
+		return "redirect:home";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
