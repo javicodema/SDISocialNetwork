@@ -1,8 +1,12 @@
 package com.uniovi.entities;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -20,10 +24,8 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 
-	/*
-	 * @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) private Set<Post>
-	 * posts;
-	 */
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<Post> posts;
 
 	public User(String email, String name, String lastName) {
 		super();
@@ -67,11 +69,13 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	/*
-	 * public void setPosts(Set<Post> posts) { this.posts = posts; }
-	 * 
-	 * public Set<Post> Post() { return posts; }
-	 */
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Set<Post> Post() {
+		return posts;
+	}
 
 	public String getFullName() {
 		return this.name + " " + this.lastName;
