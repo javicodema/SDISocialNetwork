@@ -5,7 +5,7 @@
 	<!-- Barra de Navegación superior -->
 	<nav th:replace="fragments/nav" />
 	<div class="container">
-		<h2>Agregar usuario</h2>
+		<h2 th:text="#{addus.message}">Agregar usuario</h2>
 		<form class="form-horizontal" method="post" action="/user/add">
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="email">Email:</label>

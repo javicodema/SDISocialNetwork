@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head" />
+<body>
+	<!-- Barra de Navegación superior -->
+	<nav th:replace="fragments/nav" />
+	<div class="container">
+		<h2 th:text="#{addp.message}">Añadir post</h2>
+		<form class="form-horizontal" method="post" action="/post/add" enctype="multipart/form-data">
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="title" th:text="#{titulo.message}">Titulo:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="title" required="true" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="message" th:text="#{msg.message}">Message:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="message" required="true" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="imagen" th:text="#{img.message}">Imagen (opcional):</label>
+				<div class="col-sm-10">
+					<input type="file" name="imagen" accept=".png,.jpg,.jpeg" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary" th:text="#{submit.message}">Enviar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<footer th:replace="fragments/footer" />
+</body>
+</html>
