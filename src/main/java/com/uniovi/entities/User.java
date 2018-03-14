@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -24,7 +25,9 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@ManyToOne
+	private User self;
+	@OneToMany(mappedBy = "self", cascade = CascadeType.ALL)
 	private Set<User> friends;
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
@@ -96,6 +99,17 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<User> getFriends() {
+		return friends;
+	}
+
+	public boolean existsRequest(User u) {
+		for (FriendshipRequest f : outRequests)
+			if (f.getReceiver() == u)
+				return true;
+		return false;
 	}
 
 	public String getPasswordConfirm() {

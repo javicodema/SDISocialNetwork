@@ -1,12 +1,16 @@
 package com.uniovi.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class FriendshipRequest {
-
+	@Id
+	@GeneratedValue
+	private long id;
 	@ManyToOne
 	@JoinColumn(name = "sender_id")
 	private User sender;
@@ -32,5 +36,9 @@ public class FriendshipRequest {
 		this.receiver.deleteReceivedRequest(this);
 		this.sender = null;
 		this.receiver = null;
+	}
+
+	public User getReceiver() {
+		return receiver;
 	}
 }

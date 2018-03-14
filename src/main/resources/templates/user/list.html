@@ -32,15 +32,20 @@
 				</thead>
 				<tbody>
 					<tr th:each="user : ${usersList}">
+						<div th:unless="${user.email==actual.getEmail()}">
 						<td th:text="${user.email}">Email</td>
 						<td th:text="${user.name}">Nombre del usuario</td>
 						<td th:text="${user.lastName}">Apellidos del usuario</td>
-						<td><a th:href="${' L' + user.id}"
-							th:text="#{details.message}">detalles</a></td>
-						<td><a th:href="${'/user/edit/' + user.id}"
-							th:text="#{modify.message}">modificar</a></td>
-						<td><a th:href="${'/user/delete/' + user.id}"
-							th:text="#{delete.message}">eliminar</a></td>
+						<div th:unless="${actual.getFriends().contains(user)}">
+							<div th:unless="${actual.existsRequest(user)}">
+								<a th:text="#{addFriend.message}"
+									th:href="${'/requests/add/' + user.id}">Añadir amigo</a>
+							</div>
+							<div th:if="${actual.existsRequest(user)}">
+								<a th:text="#{requestSent.message}">Pendiente</a>
+							</div>
+						</div>
+						</div>
 					</tr>
 				</tbody>
 			</table>
