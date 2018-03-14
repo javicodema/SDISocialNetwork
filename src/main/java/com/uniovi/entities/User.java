@@ -24,6 +24,15 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<User> friends;
+
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+	private Set<FriendshipRequest> outRequests;
+
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+	private Set<FriendshipRequest> inRequests;
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts;
 
@@ -103,5 +112,25 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public void addFriend(User u) {
+		this.friends.add(u);
+	}
+
+	public void addSentRequest(FriendshipRequest r) {
+		this.outRequests.add(r);
+	}
+
+	public void addReceivedRequest(FriendshipRequest r) {
+		this.inRequests.add(r);
+	}
+
+	public void deleteSentRequest(FriendshipRequest r) {
+		this.outRequests.remove(r);
+	}
+
+	public void deleteReceivedRequest(FriendshipRequest r) {
+		this.inRequests.remove(r);
 	}
 }
