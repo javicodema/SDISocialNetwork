@@ -24,19 +24,15 @@
 						<th th:text="#{name.message}">Nombre</th>
 						<th th:text="#{surname.message}">Apellidos</th>
 						<th class="col-md-1"></th>
-						<th class="col-md-1"></th>
-						<th class="col-md-1"></th>
-						<th class="col-md-1"></th>
-						<th class="col-md-1"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="user : ${usersList}">
-						<div th:unless="${user.email==actual.getEmail()}">
+						<div>
 						<td th:text="${user.email}">Email</td>
 						<td th:text="${user.name}">Nombre del usuario</td>
 						<td th:text="${user.lastName}">Apellidos del usuario</td>
-						<div th:unless="${actual.getFriends().contains(user)}">
+						<td><div th:unless="${actual.getFriends().contains(user)}">
 							<div th:unless="${actual.existsRequest(user)}">
 								<a th:text="#{addFriend.message}"
 									th:href="${'/requests/add/' + user.id}">Añadir amigo</a>
@@ -46,6 +42,7 @@
 							</div>
 						</div>
 						</div>
+						</td>
 					</tr>
 				</tbody>
 			</table>
