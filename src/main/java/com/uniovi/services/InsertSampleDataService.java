@@ -5,12 +5,15 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.uniovi.entities.FriendshipRequest;
 import com.uniovi.entities.User;
 
 @Service
 public class InsertSampleDataService {
 	@Autowired
 	private UsersService usersService;
+	@Autowired
+	private FriendshipsService frService;
 
 	@PostConstruct
 	public void init() {
@@ -47,6 +50,25 @@ public class InsertSampleDataService {
 		User user11 = new User("Núñez@gmail.com", "Edward", "Núñez");
 		user11.setPassword("123456");
 		usersService.addUser(user11);
-
+		FriendshipRequest fr1 = new FriendshipRequest(user1, user2);
+		frService.addFriendship(fr1);
+		FriendshipRequest fr2 = new FriendshipRequest(user1, user3);
+		frService.addFriendship(fr2);
+		FriendshipRequest fr3 = new FriendshipRequest(user1, user4);
+		frService.addFriendship(fr3);
+		FriendshipRequest fr4 = new FriendshipRequest(user2, user3);
+		frService.addFriendship(fr4);
+		FriendshipRequest fr5 = new FriendshipRequest(user2, user4);
+		frService.addFriendship(fr5);
+		FriendshipRequest fr6 = new FriendshipRequest(user3, user4);
+		frService.addFriendship(fr6);
+		FriendshipRequest fr7 = new FriendshipRequest(user4, user5);
+		frService.addFriendship(fr7);
+		FriendshipRequest fr8 = new FriendshipRequest(user6, user1);
+		frService.addFriendship(fr8);
+		FriendshipRequest fr9 = new FriendshipRequest(user6, user4);
+		frService.addFriendship(fr9);
+		FriendshipRequest fr10 = new FriendshipRequest(user7, user1);
+		frService.addFriendship(fr10);
 	}
 }

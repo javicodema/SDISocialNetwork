@@ -15,4 +15,7 @@ public interface UsersRepository extends CrudRepository<User, Long> {
 	Page<User> searchByEmailAndName(Pageable pageable, String seachtext);
 
 	Page<User> findAll(Pageable pageable);
+
+	@Query("SELECT u.friends FROM User u WHERE u=?1")
+	Page<User> findFriends(Pageable pageable, User useractual);
 }

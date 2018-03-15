@@ -23,6 +23,7 @@ public class FriendshipRequest {
 	}
 
 	public FriendshipRequest(User send, User receive) {
+		super();
 		this.sender = send;
 		this.receiver = receive;
 		this.sender.addSentRequest(this);
@@ -34,11 +35,13 @@ public class FriendshipRequest {
 		this.receiver.addFriend(sender);
 		this.sender.deleteSentRequest(this);
 		this.receiver.deleteReceivedRequest(this);
-		this.sender = null;
-		this.receiver = null;
 	}
 
 	public User getReceiver() {
 		return receiver;
+	}
+
+	public User getSender() {
+		return sender;
 	}
 }

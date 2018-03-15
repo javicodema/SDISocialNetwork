@@ -54,4 +54,8 @@ public class UsersService {
 		users = usersRepository.searchByEmailAndName(pageable, searchText);
 		return users;
 	}
+
+	public Page<User> getFriends(Pageable pageable, User useractual) {
+		return usersRepository.findFriends(pageable, useractual);
+	}
 }

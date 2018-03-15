@@ -1,5 +1,6 @@
 package com.uniovi.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -31,10 +32,10 @@ public class User {
 	private Set<User> friends;
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-	private Set<FriendshipRequest> outRequests;
+	private Set<FriendshipRequest> outRequests = new HashSet<FriendshipRequest>();
 
 	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-	private Set<FriendshipRequest> inRequests;
+	private Set<FriendshipRequest> inRequests = new HashSet<FriendshipRequest>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<Post> posts;

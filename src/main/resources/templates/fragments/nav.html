@@ -32,6 +32,15 @@
 						<li><a href="/post/list" th:text="#{seep.message}">Ver
 								post</a></li>
 					</ul></li>
+				<li id="requests-menu" class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" href="#" th:text="#{gestiona.message}">
+						Gestión de Amistades <span class="caret"></span>
+				</a>
+					<ul class="dropdown-menu">
+						<li><a href="/requests/received" th:text="#{listrequests.message}">Ver solicitudes</a></li>
+						<li><a href="/user/friends" th:text="#{listfriends.message}">Ver
+								amigos</a></li>
+					</ul></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a id="btnLanguage" href="#"

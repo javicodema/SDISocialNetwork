@@ -13,4 +13,7 @@ public interface FriendshipsRepository extends CrudRepository<FriendshipRequest,
 	Page<FriendshipRequest> searchByUser(Pageable pageable, User user);
 
 	Page<FriendshipRequest> findAll(Pageable pageable);
+
+	@Query("SELECT f FROM FriendshipRequest f WHERE f.sender=?1 AND f.receiver=?2")
+	FriendshipRequest findByUsers(User sender, User receiver);
 }
