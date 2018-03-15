@@ -30,6 +30,7 @@ public class UsersController {
 	private SecurityService securityService;
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	private boolean correctSignIn = true;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model, Pageable pageable,
@@ -102,6 +103,7 @@ public class UsersController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model) {
+		model.addAttribute("errorMsg", correctSignIn );
 		return "login";
 	}
 
@@ -109,4 +111,10 @@ public class UsersController {
 	public String home(Model model) {
 		return "home";
 	}
+	@RequestMapping("/login/error")
+	public String updateLogin(Model model){
+		correctSignIn = false;
+		return "redirect:/login";
+	}
+
 }
