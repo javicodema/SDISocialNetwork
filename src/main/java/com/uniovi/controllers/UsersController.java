@@ -142,7 +142,7 @@ public class UsersController {
 	}
 
 	@RequestMapping("/login/error")
-	public String updateAdminLogin(Model model){
+	public String updateAdminLog(Model model){
 		correctSignInAdm = false;
 		return "redirect:/login";
 	}
