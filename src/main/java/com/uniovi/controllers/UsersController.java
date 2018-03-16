@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,10 +102,14 @@ public class UsersController {
 		return "login";
 	}
 
-	@RequestMapping("/login/error")
-	public String updateAdminLog(Model model) {
-		correctSignInAdm = false;
-		return "redirect:/login";
+	@RequestMapping(value = "/admin/delete/{id}")
+	public String deleteUser(Model model, @PathVariable Long id) {
+		return "/admin/list";
+	}
+
+	@RequestMapping(value = "/admin/list")
+	public String adminList(Model model) {
+		return "/admin/list";
 	}
 
 }
