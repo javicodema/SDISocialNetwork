@@ -13,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,13 +51,6 @@ public class UsersController {
 		return "user/list";
 	}
 
-	@RequestMapping(value = "/user/add")
-	public String getUser(Model model, Pageable pageable, Principal principal) {
-		User user = usersService.getUserByEmail(principal.getName());
-		model.addAttribute("usersList", usersService.getUsers(pageable, user));
-		return "user/add";
-	}
-
 	@RequestMapping(value = "/user/friends")
 	public String getFriends(Principal principal, Model model, Pageable pageable) {
 		User useractual = usersService.getUserByEmail(principal.getName());
@@ -68,38 +59,6 @@ public class UsersController {
 		model.addAttribute("friendsList", users.getContent());
 		model.addAttribute("page", users);
 		return "user/friends";
-	}
-
-	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String setUser(@ModelAttribute User user) {
-		usersService.addUser(user);
-		return "redirect:/user/list";
-	}
-
-	@RequestMapping("/user/details/{id}")
-	public String getDetail(Model model, @PathVariable Long id) {
-		model.addAttribute("user", usersService.getUser(id));
-		return "user/details";
-	}
-
-	@RequestMapping("/user/delete/{id}")
-	public String delete(@PathVariable Long id) {
-		usersService.deleteUser(id);
-		return "redirect:/user/list";
-	}
-
-	@RequestMapping(value = "/user/edit/{id}")
-	public String getEdit(Model model, @PathVariable Long id) {
-		User user = usersService.getUser(id);
-		model.addAttribute("user", user);
-		return "user/edit";
-	}
-
-	@RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-	public String setEdit(Model model, @PathVariable Long id, @ModelAttribute User user) {
-		user.setId(id);
-		usersService.addUser(user);
-		return "redirect:/user/details/" + id;
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -121,7 +80,7 @@ public class UsersController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model) {
-		model.addAttribute("errorMsg", correctSignIn );
+		model.addAttribute("errorMsg", correctSignIn);
 		return "login";
 	}
 
@@ -129,22 +88,23 @@ public class UsersController {
 	public String home(Model model) {
 		return "home";
 	}
+
 	@RequestMapping("/login/error")
-	public String updateLogin(Model model){
+	public String updateLogin(Model model) {
 		correctSignIn = false;
 		return "redirect:/login";
 	}
-	
+
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
-		model.addAttribute("errorMsg", correctSignInAdm );
+		model.addAttribute("errorMsg", correctSignInAdm);
 		return "login";
 	}
 
 	@RequestMapping("/login/error")
-	public String updateAdminLog(Model model){
+	public String updateAdminLog(Model model) {
 		correctSignInAdm = false;
 		return "redirect:/login";
 	}
-	
+
 }
