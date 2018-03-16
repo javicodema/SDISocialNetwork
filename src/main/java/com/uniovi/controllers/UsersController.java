@@ -34,6 +34,7 @@ public class UsersController {
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
 	private boolean correctSignIn = true;
+	private boolean correctSignInAdm = true;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model, Pageable pageable,
@@ -133,5 +134,17 @@ public class UsersController {
 		correctSignIn = false;
 		return "redirect:/login";
 	}
+	
+	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
+	public String adminLogin(Model model) {
+		model.addAttribute("errorMsg", correctSignInAdm );
+		return "login";
+	}
 
+	@RequestMapping("/login/error")
+	public String updateAdminLogin(Model model){
+		correctSignInAdm = false;
+		return "redirect:/login";
+	}
+	
 }
