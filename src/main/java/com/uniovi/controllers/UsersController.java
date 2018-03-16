@@ -37,14 +37,14 @@ public class UsersController {
 	@RequestMapping("/user/list")
 	public String getListado(Model model, Pageable pageable,
 			@RequestParam(value = "", required = false) String searchText) {
-		Page<User> users = new PageImpl<User>(new LinkedList<User>());
-		if (searchText != null && !searchText.isEmpty()) {
-			users = usersService.searchUsersByEmailAndName(pageable, searchText);
-		} else {
-			users = usersService.getUsers(pageable);
-		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User useractual = usersService.getUserByEmail(auth.getName());
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		if (searchText != null && !searchText.isEmpty()) {
+			users = usersService.searchUsersByEmailAndName(pageable, searchText, useractual);
+		} else {
+			users = usersService.getUsers(pageable, useractual);
+		}
 		model.addAttribute("actual", useractual);
 		model.addAttribute("usersList", users.getContent());
 		model.addAttribute("page", users);
@@ -52,8 +52,9 @@ public class UsersController {
 	}
 
 	@RequestMapping(value = "/user/add")
-	public String getUser(Model model, Pageable pageable) {
-		model.addAttribute("usersList", usersService.getUsers(pageable));
+	public String getUser(Model model, Pageable pageable, Principal principal) {
+		User user = usersService.getUserByEmail(principal.getName());
+		model.addAttribute("usersList", usersService.getUsers(pageable, user));
 		return "user/add";
 	}
 

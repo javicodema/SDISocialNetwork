@@ -7,7 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -26,9 +28,10 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 
-	@ManyToOne
-	private User self;
-	@OneToMany(mappedBy = "self", cascade = CascadeType.ALL)
+	@JoinTable(name = "friendship", joinColumns = {
+			@JoinColumn(name = "UserA", referencedColumnName = "id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "UserB", referencedColumnName = "id", nullable = false) })
+	@ManyToMany
 	private Set<User> friends;
 
 	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)

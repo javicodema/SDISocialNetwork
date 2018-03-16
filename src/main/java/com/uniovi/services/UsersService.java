@@ -26,8 +26,8 @@ public class UsersService {
 	public void init() {
 	}
 
-	public Page<User> getUsers(Pageable pageable) {
-		Page<User> users = usersRepository.findAll(pageable);
+	public Page<User> getUsers(Pageable pageable, User useractual) {
+		Page<User> users = usersRepository.findAll(pageable, useractual);
 		return users;
 	}
 
@@ -48,10 +48,10 @@ public class UsersService {
 		usersRepository.delete(id);
 	}
 
-	public Page<User> searchUsersByEmailAndName(Pageable pageable, String searchText) {
+	public Page<User> searchUsersByEmailAndName(Pageable pageable, String searchText, User useractual) {
 		Page<User> users = new PageImpl<User>(new ArrayList<User>());
 		searchText = "%" + searchText + "%";
-		users = usersRepository.searchByEmailAndName(pageable, searchText);
+		users = usersRepository.searchByEmailAndName(pageable, searchText, useractual);
 		return users;
 	}
 
