@@ -14,6 +14,7 @@
 					<tr>
 						<th th:text="#{titulo.message}">Titulo</th>
 						<th th:text="#{date.message}">Fecha</th>
+						<th th:if="${isUser}"  th:text="#{msg.message}">Mensaje</th>
 						<th class="col-md-1"></th>
 						<th class="col-md-1"></th>
 						<th class="col-md-1"></th>
@@ -25,6 +26,7 @@
 					<tr th:each="post : ${postsList}">
 						<td th:text="${post.title}">Titu</td>
 						<td th:text="${post.date}">Fecha</td>
+						<td th:if="${isUser}" th:text="${post.message}">Msg</td>
 					</tr>
 				</tbody>
 			</table>

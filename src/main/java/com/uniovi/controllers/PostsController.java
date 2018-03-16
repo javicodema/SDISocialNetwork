@@ -48,6 +48,7 @@ public class PostsController {
 		post = postsService.getPostsByUser(pageable, activeUser);
 		model.addAttribute("postsList", post.getContent());
 		model.addAttribute("page", post);
+		model.addAttribute("isUser", false);
 		return "post/list";
 	}
 
@@ -57,6 +58,7 @@ public class PostsController {
 		post = postsService.getPostsByUser(pageable, userService.getUser(id));
 		model.addAttribute("postsList", post.getContent());
 		model.addAttribute("page", post);
+		model.addAttribute("isUser", true);
 		return "post/list";
 	}
 
