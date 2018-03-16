@@ -20,6 +20,7 @@
 						placeholder="123456" required="true" />
 				</div>
 			</div>
+			<p th:if="${!errorMsg}" th:text="#{errorLog.message}" id="errorM"></p>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<button type="submit" class="btn btn-primary" th:text="#{login.message}">Login</button>
