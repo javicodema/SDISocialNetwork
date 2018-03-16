@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +27,7 @@ import com.uniovi.entities.Post;
 import com.uniovi.entities.User;
 import com.uniovi.services.PostsService;
 import com.uniovi.services.UsersService;
+import com.uniovi.validators.AddPostFormValidator;
 
 @Controller
 public class PostsController {
@@ -33,6 +36,8 @@ public class PostsController {
 	PostsService postsService;
 	@Autowired
 	UsersService userService;
+	@Autowired
+	AddPostFormValidator validator;
 
 	@RequestMapping("/post/list")
 	public String getListado(Model model, Pageable pageable) {
@@ -40,7 +45,7 @@ public class PostsController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User activeUser = userService.getUserByEmail(email);
-		post = postsService.getPostsByUser(pageable,activeUser);
+		post = postsService.getPostsByUser(pageable, activeUser);
 		model.addAttribute("postsList", post.getContent());
 		model.addAttribute("page", post);
 		return "post/list";
@@ -58,12 +63,17 @@ public class PostsController {
 	@RequestMapping(value = "/post/add")
 	public String getPost(Model model, Pageable pageable) {
 		model.addAttribute("postsList", postsService.getPosts(pageable));
+		model.addAttribute("post", new Post());
 		return "post/add";
 	}
 
 	@RequestMapping(value = "/post/add", method = RequestMethod.POST)
-	public String setPost(@RequestParam String title, @RequestParam String message,
-			@RequestParam("imagen") MultipartFile informe) {
+	public String setPost(@Validated Post postV, BindingResult result, @RequestParam String title,
+			@RequestParam String message, @RequestParam("imagen") MultipartFile informe) {
+		validator.validate(postV, result);
+		if (result.hasErrors()) {
+			return "post/add";
+		}
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User activeUser = userService.getUserByEmail(email);
