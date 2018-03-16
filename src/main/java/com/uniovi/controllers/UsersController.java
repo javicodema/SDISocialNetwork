@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uniovi.entities.User;
+import com.uniovi.services.RolesService;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
 import com.uniovi.validators.SignUpFormValidator;
@@ -33,6 +34,8 @@ public class UsersController {
 	private SecurityService securityService;
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	@Autowired
+	private RolesService rolesService;
 	private boolean correctSignIn = true;
 	private boolean correctSignInAdm = true;
 
@@ -108,6 +111,7 @@ public class UsersController {
 		if (result.hasErrors()) {
 			return "signup";
 		}
+		user.setRole(rolesService.getRoles()[0]);
 		usersService.addUser(user);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 		return "redirect:home";
@@ -138,13 +142,16 @@ public class UsersController {
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
 		model.addAttribute("errorMsg", correctSignInAdm );
-		return "login";
+		return "admin/login";
 	}
-
-	@RequestMapping("/login/error")
-	public String updateAdminLog(Model model){
-		correctSignInAdm = false;
-		return "redirect:/login";
+	
+	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
+	public String adminLogin(@RequestParam String email, @RequestParam String password, Model model) {
+		if(securityService.loginAdmin(email,password)) {
+			correctSignInAdm = false;
+			return "redirect:/user/list";
+		}
+		else return "admin/login";
 	}
 	
 }

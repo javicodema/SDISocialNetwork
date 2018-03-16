@@ -13,7 +13,7 @@ public class AddPostFormValidator implements Validator {
 	
 	@Override
 	public boolean supports(Class<?> aClass) {
-		return User.class.equals(aClass);
+		return Post.class.equals(aClass);
 	}
 
 	@Override
