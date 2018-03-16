@@ -10,9 +10,9 @@
 		<form class="navbar-form" action="/user/list">
 			<div class="form-group">
 				<input name="searchText" type="text" class="form-control" size="50"
-					placeholder="Buscar por email o nombre del usuario">
+					th:placeholder="#{usersearchph.message}">
 			</div>
-			<button type="submit" class="btn btn-default">Buscar</button>
+			<button th:text="#{usersearchbt.message}" type="submit" class="btn btn-default">Buscar</button>
 		</form>
 		<p th:text="#{userp1.message}">Los usuarios que actualmente
 			figuran en el sistema son los siguientes:</p>
