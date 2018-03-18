@@ -87,5 +87,4 @@ public class PostsController {
 		return "redirect:/post/list";
 	}
 
-
 }

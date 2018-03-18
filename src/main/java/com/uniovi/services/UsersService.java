@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,8 @@ public class UsersService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	private static final Logger logger = LoggerFactory.getLogger(UsersService.class);
+
 	@PostConstruct
 	public void init() {
 	}
@@ -37,6 +41,7 @@ public class UsersService {
 	}
 
 	public void addUser(User user) {
+		logger.info("User added with email:" + user.getEmail());
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		usersRepository.save(user);
 	}
@@ -46,6 +51,7 @@ public class UsersService {
 	}
 
 	public void deleteUser(Long id) {
+		logger.info("User deleted with id:" + id);
 		usersRepository.delete(id);
 	}
 
@@ -64,7 +70,7 @@ public class UsersService {
 		List<User> users = usersRepository.findFriendsDelete(id);
 		User actual = usersRepository.findById(id);
 		actual.deleteAllFriends();
-		for(User u:users) {
+		for (User u : users) {
 			u.deleteFriend(actual);
 		}
 	}

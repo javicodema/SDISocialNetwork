@@ -20,17 +20,13 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
-	
+
 	public Post() {
 	}
 
-	
-	
-
 	public Post(String title, String message, User user) {
 		super();
-		this.title=title;
+		this.title = title;
 		this.message = message;
 		this.user = user;
 		date = new Date();
@@ -48,44 +44,28 @@ public class Post {
 		this.message = message;
 	}
 
-
 	public User getUser() {
 		return user;
 	}
-
 
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-
-
-
 	public String getTitle() {
 		return title;
 	}
-
-
-
 
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-
-
-
 	public Date getDate() {
 		return date;
 	}
 
-
-
-
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	
-	
+
 }

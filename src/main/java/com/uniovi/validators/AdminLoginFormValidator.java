@@ -19,6 +19,6 @@ public class AdminLoginFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Error.empty");
-		
+
 	}
 }

@@ -41,6 +41,7 @@ public class UsersController {
 	@RequestMapping("/user/list")
 	public String getListado(Model model, Pageable pageable,
 			@RequestParam(value = "", required = false) String searchText) {
+		correctSignIn = true;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User useractual = usersService.getUserByEmail(auth.getName());
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
@@ -102,29 +103,28 @@ public class UsersController {
 
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
-		model.addAttribute("errorMsg", correctSignInAdm );
+		model.addAttribute("errorMsg", correctSignInAdm);
 		return "admin/login";
 	}
-	
+
 	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
 	public String adminLogin(@RequestParam String email, @RequestParam String password, Model model) {
-		if(securityService.loginAdmin(email,password)) {
+		if (securityService.loginAdmin(email, password)) {
 			correctSignInAdm = true;
 			return "redirect:/admin/list";
-		}
-		else {
+		} else {
 			correctSignInAdm = false;
 			return "admin/login";
 		}
 	}
-	
+
 	@RequestMapping("/admin/delete/{id}")
 	public String delete(@PathVariable Long id) {
 		usersService.deleteFriends(id);
 		usersService.deleteUser(id);
 		return "redirect:/admin/list";
 	}
-	
+
 	@RequestMapping("/admin/list")
 	public String getAdmListado(Model model, Pageable pageable,
 			@RequestParam(value = "", required = false) String searchText) {

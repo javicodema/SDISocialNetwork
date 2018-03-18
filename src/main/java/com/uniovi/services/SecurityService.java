@@ -49,10 +49,10 @@ public class SecurityService {
 		try {
 			userDetails = userDetailsService.loadUserByUsername(email);
 			User user = userRepo.findByEmail(email);
-			if(!user.getRole().equals("ROLE_ADMIN")) {
+			if (!user.getRole().equals("ROLE_ADMIN")) {
 				return false;
 			}
-		}catch(UsernameNotFoundException e){
+		} catch (UsernameNotFoundException e) {
 			return false;
 		}
 		UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(userDetails, password,

@@ -9,7 +9,7 @@ import com.uniovi.entities.Post;
 
 @Component
 public class AddPostFormValidator implements Validator {
-	
+
 	@Override
 	public boolean supports(Class<?> aClass) {
 		return Post.class.equals(aClass);
