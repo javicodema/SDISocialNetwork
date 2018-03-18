@@ -105,19 +105,17 @@ public class UsersController {
 		model.addAttribute("errorMsg", correctSignInAdm );
 		return "admin/login";
 	}
-
-	@RequestMapping(value = "/admin/delete/{id}")
-	public String deleteUser(Model model, @PathVariable Long id) {
-		return "/admin/list";
-	}
 	
 	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
 	public String adminLogin(@RequestParam String email, @RequestParam String password, Model model) {
 		if(securityService.loginAdmin(email,password)) {
-			correctSignInAdm = false;
+			correctSignInAdm = true;
 			return "redirect:/admin/list";
 		}
-		else return "admin/login";
+		else {
+			correctSignInAdm = false;
+			return "admin/login";
+		}
 	}
 	
 	@RequestMapping("/admin/delete/{id}")
@@ -142,12 +140,5 @@ public class UsersController {
 		model.addAttribute("page", users);
 		return "admin/list";
 	}
-
-
-	@RequestMapping(value = "/admin/list")
-	public String adminList(Model model) {
-		return "/admin/list";
-	}
-
 
 }

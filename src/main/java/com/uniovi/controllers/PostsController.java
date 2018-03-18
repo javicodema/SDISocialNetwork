@@ -64,7 +64,7 @@ public class PostsController {
 
 	@RequestMapping(value = "/post/add")
 	public String getPost(Model model, Pageable pageable) {
-		model.addAttribute("postsList", postsService.getPosts(pageable));
+		//model.addAttribute("postsList", postsService.getPosts(pageable));
 		model.addAttribute("post", new Post());
 		return "post/add";
 	}
