@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,13 +55,6 @@ public class UsersController {
 		return "user/list";
 	}
 
-	@RequestMapping(value = "/user/add")
-	public String getUser(Model model, Pageable pageable, Principal principal) {
-		User user = usersService.getUserByEmail(principal.getName());
-		model.addAttribute("usersList", usersService.getUsers(pageable, user));
-		return "user/add";
-	}
-
 	@RequestMapping(value = "/user/friends")
 	public String getFriends(Principal principal, Model model, Pageable pageable) {
 		User useractual = usersService.getUserByEmail(principal.getName());
@@ -71,12 +63,6 @@ public class UsersController {
 		model.addAttribute("friendsList", users.getContent());
 		model.addAttribute("page", users);
 		return "user/friends";
-	}
-
-	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-	public String setUser(@ModelAttribute User user) {
-		usersService.addUser(user);
-		return "redirect:/user/list";
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -99,7 +85,7 @@ public class UsersController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model) {
-		model.addAttribute("errorMsg", correctSignIn );
+		model.addAttribute("errorMsg", correctSignIn);
 		return "login";
 	}
 
@@ -107,16 +93,22 @@ public class UsersController {
 	public String home(Model model) {
 		return "home";
 	}
+
 	@RequestMapping("/login/error")
-	public String updateLogin(Model model){
+	public String updateLogin(Model model) {
 		correctSignIn = false;
 		return "redirect:/login";
 	}
-	
+
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
 		model.addAttribute("errorMsg", correctSignInAdm );
 		return "admin/login";
+	}
+
+	@RequestMapping(value = "/admin/delete/{id}")
+	public String deleteUser(Model model, @PathVariable Long id) {
+		return "/admin/list";
 	}
 	
 	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
@@ -150,4 +142,12 @@ public class UsersController {
 		model.addAttribute("page", users);
 		return "admin/list";
 	}
+
+
+	@RequestMapping(value = "/admin/list")
+	public String adminList(Model model) {
+		return "/admin/list";
+	}
+
+
 }
