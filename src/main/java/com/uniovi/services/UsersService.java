@@ -60,7 +60,7 @@ public class UsersService {
 		return usersRepository.findFriends(pageable, useractual);
 	}
 
-	public void deleteFriends(Long id) {
+	public void deleteFriends(long id) {
 		List<User> users = usersRepository.findFriendsDelete(id);
 		User actual = usersRepository.findById(id);
 		actual.deleteAllFriends();

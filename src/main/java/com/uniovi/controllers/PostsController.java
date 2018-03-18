@@ -1,10 +1,6 @@
 package com.uniovi.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +60,6 @@ public class PostsController {
 
 	@RequestMapping(value = "/post/add")
 	public String getPost(Model model, Pageable pageable) {
-		//model.addAttribute("postsList", postsService.getPosts(pageable));
 		model.addAttribute("post", new Post());
 		return "post/add";
 	}

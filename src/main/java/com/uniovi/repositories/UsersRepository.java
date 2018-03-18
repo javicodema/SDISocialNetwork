@@ -25,6 +25,6 @@ public interface UsersRepository extends CrudRepository<User, Long> {
 	@Query("SELECT u.friends FROM User u WHERE u.id=?1")
 	List<User> findFriendsDelete(Long id);
 
-	User findById(Long id);
+	User findById(long id);
 
 }

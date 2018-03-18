@@ -6,7 +6,6 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.uniovi.entities.Post;
-import com.uniovi.entities.User;
 
 @Component
 public class AddPostFormValidator implements Validator {
