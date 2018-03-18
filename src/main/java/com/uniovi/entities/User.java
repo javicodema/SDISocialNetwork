@@ -152,4 +152,12 @@ public class User {
 	public void deleteReceivedRequest(FriendshipRequest r) {
 		this.inRequests.remove(r);
 	}
+
+	public void deleteAllFriends() {
+		friends.clear();
+	}
+
+	public void deleteFriend(User actual) {
+		friends.remove(actual);
+	}
 }

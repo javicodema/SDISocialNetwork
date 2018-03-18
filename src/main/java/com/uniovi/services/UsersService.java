@@ -1,6 +1,7 @@
 package com.uniovi.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -57,5 +58,14 @@ public class UsersService {
 
 	public Page<User> getFriends(Pageable pageable, User useractual) {
 		return usersRepository.findFriends(pageable, useractual);
+	}
+
+	public void deleteFriends(Long id) {
+		List<User> users = usersRepository.findFriendsDelete(id);
+		User actual = usersRepository.findById(id);
+		actual.deleteAllFriends();
+		for(User u:users) {
+			u.deleteFriend(actual);
+		}
 	}
 }

@@ -79,32 +79,6 @@ public class UsersController {
 		return "redirect:/user/list";
 	}
 
-	@RequestMapping("/user/details/{id}")
-	public String getDetail(Model model, @PathVariable Long id) {
-		model.addAttribute("user", usersService.getUser(id));
-		return "user/details";
-	}
-
-	@RequestMapping("/user/delete/{id}")
-	public String delete(@PathVariable Long id) {
-		usersService.deleteUser(id);
-		return "redirect:/user/list";
-	}
-
-	@RequestMapping(value = "/user/edit/{id}")
-	public String getEdit(Model model, @PathVariable Long id) {
-		User user = usersService.getUser(id);
-		model.addAttribute("user", user);
-		return "user/edit";
-	}
-
-	@RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-	public String setEdit(Model model, @PathVariable Long id, @ModelAttribute User user) {
-		user.setId(id);
-		usersService.addUser(user);
-		return "redirect:/user/details/" + id;
-	}
-
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signup(@Validated User user, BindingResult result, Model model) {
 		signUpFormValidator.validate(user, result);
@@ -149,9 +123,31 @@ public class UsersController {
 	public String adminLogin(@RequestParam String email, @RequestParam String password, Model model) {
 		if(securityService.loginAdmin(email,password)) {
 			correctSignInAdm = false;
-			return "redirect:/user/list";
+			return "redirect:/admin/list";
 		}
 		else return "admin/login";
 	}
 	
+	@RequestMapping("/admin/delete/{id}")
+	public String delete(@PathVariable Long id) {
+		usersService.deleteFriends(id);
+		usersService.deleteUser(id);
+		return "redirect:/admin/list";
+	}
+	
+	@RequestMapping("/admin/list")
+	public String getAdmListado(Model model, Pageable pageable,
+			@RequestParam(value = "", required = false) String searchText) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User useractual = usersService.getUserByEmail(auth.getName());
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		if (searchText != null && !searchText.isEmpty()) {
+			users = usersService.searchUsersByEmailAndName(pageable, searchText, useractual);
+		} else {
+			users = usersService.getUsers(pageable, useractual);
+		}
+		model.addAttribute("usersList", users.getContent());
+		model.addAttribute("page", users);
+		return "admin/list";
+	}
 }

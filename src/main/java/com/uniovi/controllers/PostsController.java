@@ -83,12 +83,7 @@ public class PostsController {
 		postsService.addPost(post);
 		if (!informe.isEmpty()) {
 			try {
-				String fileName = informe.getOriginalFilename();
-				String[] auxis = fileName.split("\\.");
-				fileName = String.valueOf(post.getId()) + "." + auxis[1];
-				InputStream is = informe.getInputStream();
-				Files.copy(is, Paths.get("src/main/resources/static/posts/" + fileName),
-						StandardCopyOption.REPLACE_EXISTING);
+				postsService.saveImage(informe, post);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return "redirect:/post/add";
@@ -96,5 +91,6 @@ public class PostsController {
 		}
 		return "redirect:/post/list";
 	}
+
 
 }
