@@ -21,7 +21,7 @@ public class CustomConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		String pathProyecto = System.getProperty("user.dir");
-		String pathFotossubidas = "file:///" + pathProyecto + "/src/main/resources/static/fotossubidas";
+		String pathFotossubidas = "file:///" + pathProyecto + "/src/main/resources/static/fotossubidas/";
 		registry.addResourceHandler("/fotossubidas/**").addResourceLocations(pathFotossubidas);
 	}
 
