@@ -12,7 +12,8 @@
 				<input name="searchText" type="text" class="form-control" size="50"
 					th:placeholder="#{usersearchph.message}">
 			</div>
-			<button th:text="#{usersearchbt.message}" type="submit" class="btn btn-default">Buscar</button>
+			<button id="searchButton" th:text="#{usersearchbt.message}" type="submit"
+				class="btn btn-default">Buscar</button>
 		</form>
 		<p th:text="#{userp1.message}">Los usuarios que actualmente
 			figuran en el sistema son los siguientes:</p>
@@ -29,18 +30,29 @@
 				<tbody>
 					<tr th:each="user : ${usersList}">
 						<div>
-						<td th:text="${user.email}">Email</td>
-						<td th:text="${user.name}">Nombre del usuario</td>
-						<td th:text="${user.lastName}">Apellidos del usuario</td>
-						<td><div th:unless="${actual.getFriends().contains(user)}">
-							<div th:unless="${actual.existsRequest(user)}">
-								<a th:text="#{addFriend.message}"
-									th:href="${'/requests/add/' + user.id}">Añadir amigo</a>
-							</div>
-							<div th:if="${actual.existsRequest(user)}">
-								<a th:text="#{requestSent.message}">Pendiente</a>
-							</div>
-						</div>
+							<td th:text="${user.email}">Email</td>
+							<td th:text="${user.name}">Nombre del usuario</td>
+							<td th:text="${user.lastName}">Apellidos del usuario</td>
+							<td><div th:unless="${actual.getFriends().contains(user)}">
+									<div th:unless="${actual.existsRequest(user)}">
+										<button type="button" th:id="${'sendButton' + user.id}"
+											class="btn btn-info" th:text="#{addFriend.message}">Agregar</button>
+										<script th:inline="javascript">
+ /*<![CDATA[*/
+ $( "#sendButton[[${user.id}]]" ).click(function() {
+	 $.get( "/requests/add/[[${user.id}]]", function(){
+		 location.reload();
+ 	});
+ });
+ /*]]>*/
+
+ </script>
+									</div>
+									<div th:if="${actual.existsRequest(user)}">
+									<button type="button" th:id="${'pendingButton' + user.id}"
+											class="btn btn-info" th:text="#{requestSent.message}">Pendiente</button>
+									</div>
+								</div>
 						</div>
 						</td>
 					</tr>
