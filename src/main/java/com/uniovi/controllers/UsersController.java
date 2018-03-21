@@ -114,14 +114,17 @@ public class UsersController {
 			return "redirect:/admin/list";
 		} else {
 			correctSignInAdm = false;
+			model.addAttribute("errorMsg", correctSignInAdm);
 			return "admin/login";
 		}
 	}
 
 	@RequestMapping("/admin/delete/{id}")
 	public String delete(@PathVariable Long id) {
-		usersService.deleteFriends(id);
-		usersService.deleteUser(id);
+		if (usersService.getUser(id) != null) {
+			usersService.deleteFriends(id);
+			usersService.deleteUser(id);
+		}
 		return "redirect:/admin/list";
 	}
 
