@@ -131,7 +131,7 @@ public class UsersController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User useractual = usersService.getUserByEmail(auth.getName());
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
-		if (searchText != null && !searchText.isEmpty()) {
+		if ((searchText != null) && (!searchText.isEmpty())) {
 			users = usersService.searchUsersByEmailAndName(pageable, searchText, useractual);
 		} else {
 			users = usersService.getUsers(pageable, useractual);
