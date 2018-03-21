@@ -108,4 +108,20 @@ public class SocialNetworkTests {
 		PO_LoginView.fillForm(driver, "UsuarioNoExistente@gmail.com", "123456");
 		PO_View.checkKey(driver, "errorLog.message", PO_Properties.getSPANISH());
 	}
+
+	// Login y acceso a lista de usuarios
+	@Test
+	public void PR3_1LisUsrVal() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "UsuarioNoExistente@gmail.com", "123456");
+		PO_View.checkKey(driver, "errorLog.message", PO_Properties.getSPANISH());
+	}
+
+	// Acceso a lista de usuarios mediante URL sin identificación
+	@Test
+	public void PR3_1LisUsrInVal() {
+
+	}
 }
