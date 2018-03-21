@@ -1,10 +1,6 @@
 package com.uniovi.controllers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +60,6 @@ public class PostsController {
 
 	@RequestMapping(value = "/post/add")
 	public String getPost(Model model, Pageable pageable) {
-		model.addAttribute("postsList", postsService.getPosts(pageable));
 		model.addAttribute("post", new Post());
 		return "post/add";
 	}
@@ -83,12 +78,7 @@ public class PostsController {
 		postsService.addPost(post);
 		if (!informe.isEmpty()) {
 			try {
-				String fileName = informe.getOriginalFilename();
-				String[] auxis = fileName.split("\\.");
-				fileName = String.valueOf(post.getId()) + "." + auxis[1];
-				InputStream is = informe.getInputStream();
-				Files.copy(is, Paths.get("src/main/resources/static/posts/" + fileName),
-						StandardCopyOption.REPLACE_EXISTING);
+				postsService.saveImage(informe, post);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return "redirect:/post/add";

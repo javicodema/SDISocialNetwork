@@ -6,14 +6,13 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.uniovi.entities.Post;
-import com.uniovi.entities.User;
 
 @Component
 public class AddPostFormValidator implements Validator {
-	
+
 	@Override
 	public boolean supports(Class<?> aClass) {
-		return User.class.equals(aClass);
+		return Post.class.equals(aClass);
 	}
 
 	@Override

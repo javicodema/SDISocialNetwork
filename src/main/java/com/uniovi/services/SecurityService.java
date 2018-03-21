@@ -8,7 +8,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Service;;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.uniovi.entities.User;
+import com.uniovi.repositories.UsersRepository;;
 
 @Service
 public class SecurityService {
@@ -16,6 +20,8 @@ public class SecurityService {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private UserDetailsService userDetailsService;
+	@Autowired
+	private UsersRepository userRepo;
 	private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
 
 	public String findLoggedInUsername() {
@@ -36,5 +42,26 @@ public class SecurityService {
 			SecurityContextHolder.getContext().setAuthentication(aToken);
 			logger.debug(String.format("Auto login %s successfully!", username));
 		}
+	}
+
+	public boolean loginAdmin(String email, String password) {
+		UserDetails userDetails;
+		try {
+			userDetails = userDetailsService.loadUserByUsername(email);
+			User user = userRepo.findByEmail(email);
+			if (!user.getRole().equals("ROLE_ADMIN")) {
+				return false;
+			}
+		} catch (UsernameNotFoundException e) {
+			return false;
+		}
+		UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(userDetails, password,
+				userDetails.getAuthorities());
+		authenticationManager.authenticate(aToken);
+		if (aToken.isAuthenticated()) {
+			SecurityContextHolder.getContext().setAuthentication(aToken);
+			logger.debug(String.format("Admin logged %s successfully!", email));
+		}
+		return true;
 	}
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uniovi.entities.User;
+import com.uniovi.services.RolesService;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
 import com.uniovi.validators.SignUpFormValidator;
@@ -32,12 +33,15 @@ public class UsersController {
 	private SecurityService securityService;
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	@Autowired
+	private RolesService rolesService;
 	private boolean correctSignIn = true;
 	private boolean correctSignInAdm = true;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model, Pageable pageable,
 			@RequestParam(value = "", required = false) String searchText) {
+		correctSignIn = true;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User useractual = usersService.getUserByEmail(auth.getName());
 		Page<User> users = new PageImpl<User>(new LinkedList<User>());
@@ -68,6 +72,7 @@ public class UsersController {
 		if (result.hasErrors()) {
 			return "signup";
 		}
+		user.setRole(rolesService.getRoles()[0]);
 		usersService.addUser(user);
 		securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
 		return "redirect:home";
@@ -99,17 +104,41 @@ public class UsersController {
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
 		model.addAttribute("errorMsg", correctSignInAdm);
-		return "login";
+		return "admin/login";
 	}
 
-	@RequestMapping(value = "/admin/delete/{id}")
-	public String deleteUser(Model model, @PathVariable Long id) {
-		return "/admin/list";
+	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
+	public String adminLogin(@RequestParam String email, @RequestParam String password, Model model) {
+		if (securityService.loginAdmin(email, password)) {
+			correctSignInAdm = true;
+			return "redirect:/admin/list";
+		} else {
+			correctSignInAdm = false;
+			return "admin/login";
+		}
 	}
 
-	@RequestMapping(value = "/admin/list")
-	public String adminList(Model model) {
-		return "/admin/list";
+	@RequestMapping("/admin/delete/{id}")
+	public String delete(@PathVariable Long id) {
+		usersService.deleteFriends(id);
+		usersService.deleteUser(id);
+		return "redirect:/admin/list";
+	}
+
+	@RequestMapping("/admin/list")
+	public String getAdmListado(Model model, Pageable pageable,
+			@RequestParam(value = "", required = false) String searchText) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User useractual = usersService.getUserByEmail(auth.getName());
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		if (searchText != null && !searchText.isEmpty()) {
+			users = usersService.searchUsersByEmailAndName(pageable, searchText, useractual);
+		} else {
+			users = usersService.getUsers(pageable, useractual);
+		}
+		model.addAttribute("usersList", users.getContent());
+		model.addAttribute("page", users);
+		return "admin/list";
 	}
 
 }
