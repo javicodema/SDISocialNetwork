@@ -25,9 +25,9 @@
 						Gestión de post <span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="/post/add" th:text="#{addp.message}">Agregar
+						<li><a id="addPost" href="/post/add" th:text="#{addp.message}">Agregar
 								post</a></li>
-						<li><a href="/post/list" th:text="#{seep.message}">Ver
+						<li><a id="listPost" href="/post/list" th:text="#{seep.message}">Ver
 								post</a></li>
 					</ul></li>
 				<li id="requests-menu" class="dropdown"><a class="dropdown-toggle"
@@ -35,8 +35,8 @@
 						Gestión de Amistades <span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="/requests/received" th:text="#{listrequests.message}">Ver solicitudes</a></li>
-						<li><a href="/user/friends" th:text="#{listfriends.message}">Ver
+						<li><a id="requestsList" href="/requests/received" th:text="#{listrequests.message}">Ver solicitudes</a></li>
+						<li><a id="friendsList" href="/user/friends" th:text="#{listfriends.message}">Ver
 								amigos</a></li>
 					</ul></li>
 			</ul>

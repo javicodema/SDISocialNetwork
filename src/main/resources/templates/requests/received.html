@@ -7,7 +7,8 @@
 	<div class="container">
 
 		<h2 th:text="#{requeststitle.message}">Solicitudes</h2>
-		<p th:text="#{requests.message}">Las peticiones del usuario son las siguientes:</p>
+		<p th:text="#{requests.message}">Las peticiones del usuario son
+			las siguientes:</p>
 		<div class="table-responsive">
 			<table class="table table-hover">
 				<thead>
@@ -17,11 +18,28 @@
 
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="requestsTable">
 					<tr th:each="request : ${requestsList}">
-						<td th:text="${request.getSender().getName()}">Peter</td>
-						<td><a th:text="#{acceptfriend.message}"
-									th:href="${'/requests/accept/' + request.getSender().getId()}">Agregar amigo</a></td>
+						<td th:text="${request.sender.name}">Peter</td>
+						<td><button type="button"
+								th:id="${'acceptButton' + request.sender.id}"
+								class="btn btn-info" th:text="#{acceptfriend.message}">Aceptar</button>
+							<script th:inline="javascript">
+								/*<![CDATA[*/
+								$(
+										"#acceptButton[[${request.sender.id}]]")
+										.click(
+												function() {
+													$
+															.get(
+																	"/requests/accept/[[${request.sender.id}]]",
+																	function() {
+																		location
+																				.reload();
+																	});
+												});
+								/*]]>*/
+							</script></td>
 					</tr>
 				</tbody>
 			</table>
