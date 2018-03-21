@@ -50,6 +50,13 @@ public class PostsController {
 
 	@RequestMapping("/post/list/{id}")
 	public String getListado(Model model, Pageable pageable, @PathVariable Long id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String email = auth.getName();
+		User activeUser = userService.getUserByEmail(email);
+		User friend = userService.getUser(id);
+		if(!activeUser.getFriends().contains(friend)) {
+			return "home";
+		}
 		Page<Post> post = new PageImpl<Post>(new LinkedList<Post>());
 		post = postsService.getPostsByUser(pageable, userService.getUser(id));
 		model.addAttribute("postsList", post.getContent());
