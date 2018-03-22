@@ -297,7 +297,7 @@ public class SocialNetworkTests {
 	// Acceso al listado de publicaciones desde un usuario en sesión.
 	@Test
 	public void PR10_1LisPubVal() {
-		// Vamos al formulario de logueo.
+		// Vamos al formulario de log.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "Peter@gmail.com", "123456");
