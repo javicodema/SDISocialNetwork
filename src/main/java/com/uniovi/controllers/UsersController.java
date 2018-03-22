@@ -39,7 +39,6 @@ public class UsersController {
 	@Autowired
 	private RolesService rolesService;
 	private boolean correctSignIn = true;
-	private boolean correctSignInAdm = true;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model, Pageable pageable,
