@@ -27,7 +27,7 @@ public class PO_Properties {
 	//
 	// locale is de index in idioms array.
 	//
-	public String getString(String prop, int locale) {
+	public static String getString(String prop, int locale) {
 
 		ResourceBundle bundle = ResourceBundle.getBundle(Path, idioms[locale]);
 		String value = bundle.getString(prop);

@@ -12,8 +12,8 @@
 		
 		<div class="container" th:each="post : ${postsList}">
 			<div class="panel panel-default">
-				<div class="panel-heading" th:text="${post.title+'   '+post.date}">
-				<p th:text="${post.date}"></p></div>
+				<div class="panel-heading">
+				<p th:id="${'post' + post.id}" th:text="${post.title+'   '+post.date}"></p></div>
 				<div th:if="${isUser}" class="panel-body" th:text="${post.message}">
 				28276</div>
 				<img th:if="${isUser}" th:src="@{/fotossubidas/P-{id}.jpg(id=${post.id})}"/>

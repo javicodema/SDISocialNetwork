@@ -34,8 +34,9 @@
 															.get(
 																	"/requests/accept/[[${request.sender.id}]]",
 																	function() {
-																		location
-																				.reload();
+																		$(
+																		"#acceptButton[[${request.sender.id}]]").attr("disabled",true);
+																		$( "#acceptButton[[${request.sender.id}]]" ).text([[#{acceptedfriend.message}]]);
 																	});
 												});
 								/*]]>*/

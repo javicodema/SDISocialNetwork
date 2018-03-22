@@ -26,7 +26,9 @@ import com.uniovi.tests.util.SeleniumUtils;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SocialNetworkTests {
-	static String PathFirefox = "C:\\Users\\Javier\\Downloads\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
+	static String PathFirefox = "C:\\Users\\David\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
+	// static String PathFirefox =
+	// "C:\\Users\\Javier\\Downloads\\Firefox46.0.win\\Firefox46.win\\FirefoxPortable.exe";
 	static WebDriver driver = getDriver(PathFirefox);
 	static String URL = "http://localhost:8090";
 
@@ -176,7 +178,7 @@ public class SocialNetworkTests {
 		// Comprobamos que estamos en la lista de usuarios
 		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
 		// Agregamos al usuario de id 1 (Peter@gmail.com)
-		driver.findElement(By.id("sendButton1")).click();
+		PO_View.checkElement(driver, "id", "sendButton1").get(0).click();
 	}
 
 	// Enviar una invitación de amistad a un usuario al que ya le habíamos invitado
@@ -193,7 +195,8 @@ public class SocialNetworkTests {
 		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
 		// Comprobamos que no podemos agregar al usuario 2 (existe por defecto una
 		// peticion) y que se muestra el botón de pendiente
-		assertTrue(null != driver.findElement(By.id("pendingButton2")));
+		PO_View.checkKey(driver, "requestSent.message", PO_Properties.getSPANISH());
+		PO_View.checkElement(driver, "id", "pendingButton2");
 	}
 
 	// Listar las invitaciones recibidas por un usuario, realizar la comprobación
@@ -270,6 +273,8 @@ public class SocialNetworkTests {
 		PO_View.checkElement(driver, "id", "message").get(0).sendKeys("amo a testearno");
 		// La enviamos
 		PO_View.checkElement(driver, "id", "submitButton").get(0).click();
+		// Comprobamos que estamos en la lista de posts
+		PO_View.checkKey(driver, "postp1.message", PO_Properties.getSPANISH());
 	}
 
 	// Acceso al listado de publicaciones desde un usuario en sesión.
@@ -285,7 +290,7 @@ public class SocialNetworkTests {
 		driver.findElement(By.id("posts-menu")).click();
 		driver.findElement(By.id("listPost")).click();
 		// Comprobamos que tenemos un post
-		assertTrue(1 == driver.findElements(By.className("panel panel-default")).size());
+		assertTrue(PO_View.checkElement(driver, "id", "post1").size() == 1);
 	}
 
 	// Listar las publicaciones de un usuario amigo
@@ -312,11 +317,11 @@ public class SocialNetworkTests {
 	// Inicio de sesión como administrador con datos válidos.
 	@Test
 	public void PR13_1AdInVal() {
-		//accedemos a la url del login del admin
+		// accedemos a la url del login del admin
 		driver.navigate().to("http://localhost:8090/admin/login");
-		//rellenamos el formulario con datos de un admin
+		// rellenamos el formulario con datos de un admin
 		PO_LoginView.fillFormAdmin(driver, "Dromir@gmail.com", "123456");
-		//accedemos al listado
+		// accedemos al listado
 		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
 	}
 
@@ -325,9 +330,9 @@ public class SocialNetworkTests {
 	@Test
 	public void PR13_2AdInInVal() {
 		driver.navigate().to("http://localhost:8090/admin/login");
-		//rellenamos el formulario con datos de un usuario normal y corriente
+		// rellenamos el formulario con datos de un usuario normal y corriente
 		PO_LoginView.fillFormAdmin(driver, "Peter@gmail.com", "123456");
-		//leemos el mensaje de error en la pantalla
+		// leemos el mensaje de error en la pantalla
 		PO_View.checkKey(driver, "errorAdmLog.message", PO_Properties.getSPANISH());
 	}
 
@@ -337,7 +342,7 @@ public class SocialNetworkTests {
 	public void PR14_1AdLisUsrVal() {
 		driver.navigate().to("http://localhost:8090/admin/login");
 		PO_LoginView.fillFormAdmin(driver, "Dromir@gmail.com", "123456");
-		//accedemos directamente al listado
+		// accedemos directamente al listado
 		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
 	}
 
@@ -347,15 +352,15 @@ public class SocialNetworkTests {
 	public void PR15_1AdBorUsrVal() {
 		driver.navigate().to("http://localhost:8090/admin/login");
 		PO_LoginView.fillFormAdmin(driver, "Dromir@gmail.com", "123456");
-		//comprobamos que existe el usuario Peter
+		// comprobamos que existe el usuario Peter
 		PO_View.checkElement(driver, "text", "Peter@gmail.com");
-		//lo eliminamos
-		driver.navigate().to("http://localhost:8090/admin/delete/1");
-		//nos desconectamos e intentamos acceder como Peter
+		// lo eliminamos
+		PO_View.checkElement(driver, "id", "deleteButton1").get(0).click();
+		// nos desconectamos e intentamos acceder como Peter
 		PO_PrivateView.clickOption(driver, "/logout", "text", "Email");
-		//driver.findElement(By.id("logout")).click(); no funcionaba por el timeout
+		// driver.findElement(By.id("logout")).click(); no funcionaba por el timeout
 		PO_LoginView.fillForm(driver, "Peter@gmail.com", "123456");
-		//efectivamente no nos deja entrar ya que el usuario ya no existe
+		// efectivamente no nos deja entrar ya que el usuario ya no existe
 		PO_View.checkKey(driver, "errorLog.message", PO_Properties.getSPANISH());
 	}
 
@@ -366,9 +371,9 @@ public class SocialNetworkTests {
 	public void PR15_2AdBorUsrInVal() {
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		PO_LoginView.fillForm(driver, "Javier@gmail.com", "123456");
-		//intentamos eliminar a un usuario desde un acceso que no es de administrador
+		// intentamos eliminar a un usuario desde un acceso que no es de administrador
 		driver.navigate().to("http://localhost:8090/admin/delete/2");
-		//Comprobamos que nos salta el error de acceso denegado
+		// Comprobamos que nos salta el error de acceso denegado
 		PO_View.checkElement(driver, "text", "Access is denied");
 	}
 }

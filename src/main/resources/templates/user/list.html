@@ -41,7 +41,8 @@
  /*<![CDATA[*/
  $( "#sendButton[[${user.id}]]" ).click(function() {
 	 $.get( "/requests/add/[[${user.id}]]", function(){
-		 location.reload();
+		 $( "#sendButton[[${user.id}]]" ).attr("disabled",true);
+		 $( "#sendButton[[${user.id}]]" ).text([[#{requestSent.message}]]);
  	});
  });
  /*]]>*/
@@ -49,7 +50,7 @@
  </script>
 									</div>
 									<div th:if="${actual.existsRequest(user)}">
-									<button type="button" th:id="${'pendingButton' + user.id}"
+									<button disabled=true type="button" th:id="${'pendingButton' + user.id}"
 											class="btn btn-info" th:text="#{requestSent.message}">Pendiente</button>
 									</div>
 								</div>
