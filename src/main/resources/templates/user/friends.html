@@ -21,7 +21,9 @@
 						<div>
 						<td th:text="${user.email}">Email</td>
 						<td th:text="${user.name}">Nombre del usuario</td>
-						<td><a th:href="${'/post/list/' + user.id}" th:text="#{seePA.message}">Ver publicaciones</a></td>
+						<td>
+						<a th:id="${'postsFriend'+user.id}" th:href="${'/post/list/' + user.id}" th:text="#{seePA.message}">Ver publicaciones</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>

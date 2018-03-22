@@ -307,28 +307,103 @@ public class SocialNetworkTests {
 		driver.findElement(By.id("posts-menu")).click();
 		driver.findElement(By.id("listPost")).click();
 		// Comprobamos que tenemos un post
-		assertTrue(PO_View.checkElement(driver, "id", "post1").size() == 1);
+		assertTrue(PO_View.checkElement(driver, "id", "post11").size() == 1);
 	}
 
 	// Listar las publicaciones de un usuario amigo
 	@Test
 	public void PR11_1LisPubAmiVal() {
+		// Vamos al formulario de log.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "Javier@gmail.com", "123456");
+		// Comprobamos que estamos en la lista de usuarios
+		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
+		// Vamos a la lista de amigos del usuario
+		driver.findElement(By.id("requests-menu")).click();
+		driver.findElement(By.id("friendsList")).click();
+		// Vamos a ver los posts de nuestro amigo Peter
+		PO_View.checkElement(driver, "id", "postsFriend1").get(0).click();
+		// Comprobamos que aparece un post
+		assertTrue(PO_View.checkElement(driver, "id", "post11").size() == 1);
 	}
 
 	// Utilizando un acceso vía URL tratar de listar las publicaciones de un usuario
 	// que no sea amigo del usuario identificado en sesión.
 	@Test
 	public void PR11_2LisPubAmiInVal() {
+		// Vamos al formulario de log.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "Marta@gmail.com", "123456");
+		// Tratamos de acceder a los posts de Javier
+		driver.navigate().to(URL + "/post/list/6");
+		// Comprobamos que te lleva a la página de inicio en lugar de la lista
+		PO_View.checkKey(driver, "welcome.message", PO_Properties.getSPANISH());
 	}
 
 	// Crear una publicación con datos válidos y una foto adjunta.
 	@Test
 	public void PR12_1PubFot1Val() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "Peter@gmail.com", "123456");
+		// Comprobamos que estamos en la lista de usuarios
+		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
+		// Vamos a añadir un post
+		driver.findElement(By.id("posts-menu")).click();
+		driver.findElement(By.id("addPost")).click();
+		// Rellenamos la publicación
+		PO_View.checkElement(driver, "id", "title").get(0).sendKeys("Test");
+		PO_View.checkElement(driver, "id", "message").get(0).sendKeys("amo a testearno un poquito mas");
+		// Este path debe ser modificado para que apunte a una imagen .jpg, una imagen
+		// jpg va incluida en el proyecto
+		PO_View.checkElement(driver, "id", "image").get(0)
+				.sendKeys("C:\\Users\\david\\Bitbucket\\SDISocialNetwork\\prueba.jpg");
+		// La enviamos
+		PO_View.checkElement(driver, "id", "submitButton").get(0).click();
+		// Comprobamos que estamos en la lista de posts
+		PO_View.checkKey(driver, "postp1.message", PO_Properties.getSPANISH());
+		// Comprobamos que aparece el nuevo post y la foto
+		assertTrue(PO_View.checkElement(driver, "id", "post12").size() == 1);
+		// Vamos a entrar con un amigo para comprobar que aparece la foto
+		PO_PrivateView.clickOption(driver, "/logout", "text", "Email");
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "Javier@gmail.com", "123456");
+		// Comprobamos que estamos en la lista de usuarios
+		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
+		// Vamos a ver los posts de nuestro amigo Peter
+		driver.findElement(By.id("requests-menu")).click();
+		driver.findElement(By.id("friendsList")).click();
+		PO_View.checkElement(driver, "id", "postsFriend1").get(0).click();
+		// Comprobamos que aparece la imagen
+		assertTrue(PO_View.checkElement(driver, "id", "imagen12").size() == 1);
 	}
 
 	// Crear una publicación con datos válidos y sin una foto adjunta.
 	@Test
 	public void PR12_2PubFot2Val() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "Peter@gmail.com", "123456");
+		// Comprobamos que estamos en la lista de usuarios
+		PO_View.checkKey(driver, "userp1.message", PO_Properties.getSPANISH());
+		// Vamos a añadir un post
+		driver.findElement(By.id("posts-menu")).click();
+		driver.findElement(By.id("addPost")).click();
+		// Rellenamos la publicación
+		PO_View.checkElement(driver, "id", "title").get(0).sendKeys("Test");
+		PO_View.checkElement(driver, "id", "message").get(0).sendKeys("y una mas");
+		// La enviamos
+		PO_View.checkElement(driver, "id", "submitButton").get(0).click();
+		// Comprobamos que estamos en la lista de posts
+		PO_View.checkKey(driver, "postp1.message", PO_Properties.getSPANISH());
+		// Comprobamos que aparece el nuevo post
+		assertTrue(PO_View.checkElement(driver, "id", "post13").size() == 1);
 	}
 
 	// Inicio de sesión como administrador con datos válidos.
