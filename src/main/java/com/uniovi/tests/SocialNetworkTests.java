@@ -230,10 +230,11 @@ public class SocialNetworkTests {
 		// Vamos a la lista de solicitudes de amigo
 		driver.findElement(By.id("requests-menu")).click();
 		driver.findElement(By.id("requestsList")).click();
-		// Aceptamos una peticion de amistad
+		// Comprobamos que tenemos 3 peticiones (2 por defecto y la que enviamos antes)
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//td/button",
 				PO_View.getTimeout());
 		assertTrue(elementos.size() == 3);
+		// Aceptamos la primera
 		elementos.get(0).click();
 	}
 
@@ -254,6 +255,22 @@ public class SocialNetworkTests {
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
 				PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
+		// Vamos a la lista de solicitudes de amigo
+		driver.findElement(By.id("requests-menu")).click();
+		driver.findElement(By.id("requestsList")).click();
+		// Comprobamos que tenemos 2 peticiones
+		List<WebElement> elementos2 = SeleniumUtils.EsperaCargaPagina(driver, "free", "//td/button",
+				PO_View.getTimeout());
+		assertTrue(elementos2.size() == 2);
+		// Aceptamos la primera
+		elementos2.get(0).click();
+		// Vamos a la lista de amigos
+		driver.findElement(By.id("requests-menu")).click();
+		driver.findElement(By.id("friendsList")).click();
+		// Comprobamos que tenemos 2 amigos
+		List<WebElement> elementos3 = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
+				PO_View.getTimeout());
+		assertTrue(elementos3.size() == 2);
 	}
 
 	// Crear una publicación con datos válidos.
