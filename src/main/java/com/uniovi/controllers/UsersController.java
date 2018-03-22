@@ -22,6 +22,7 @@ import com.uniovi.entities.User;
 import com.uniovi.services.RolesService;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
+import com.uniovi.validators.AdminLoginFormValidator;
 import com.uniovi.validators.SignUpFormValidator;
 
 @Controller
@@ -33,6 +34,8 @@ public class UsersController {
 	private SecurityService securityService;
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	@Autowired
+	private AdminLoginFormValidator admin;
 	@Autowired
 	private RolesService rolesService;
 	private boolean correctSignIn = true;
@@ -103,20 +106,17 @@ public class UsersController {
 
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public String adminLogin(Model model) {
-		model.addAttribute("errorMsg", correctSignInAdm);
+		model.addAttribute("user", new User());
 		return "admin/login";
 	}
 
 	@RequestMapping(value = "/admin/login", method = RequestMethod.POST)
-	public String adminLogin(@RequestParam String email, @RequestParam String password, Model model) {
-		if (securityService.loginAdmin(email, password)) {
-			correctSignInAdm = true;
-			return "redirect:/admin/list";
-		} else {
-			correctSignInAdm = false;
-			model.addAttribute("errorMsg", correctSignInAdm);
+	public String adminLogin(@Validated User user, BindingResult result, Model model) {
+		admin.validate(user, result);
+		if (result.hasErrors()) {
 			return "admin/login";
 		}
+		return "redirect:/admin/list";
 	}
 
 	@RequestMapping("/admin/delete/{id}")

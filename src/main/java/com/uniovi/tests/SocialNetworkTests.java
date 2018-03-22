@@ -348,13 +348,13 @@ public class SocialNetworkTests {
 		driver.navigate().to("http://localhost:8090/admin/login");
 		PO_LoginView.fillFormAdmin(driver, "Dromir@gmail.com", "123456");
 		//comprobamos que existe el usuario Peter
-		PO_View.checkElement(driver, "text", "Peter@gmail.com");
+		PO_View.checkElement(driver, "text", "Pablo@gmail.com");
 		//lo eliminamos
-		driver.navigate().to("http://localhost:8090/admin/delete/1");
+		driver.navigate().to("http://localhost:8090/admin/delete/2");
 		//nos desconectamos e intentamos acceder como Peter
 		PO_PrivateView.clickOption(driver, "/logout", "text", "Email");
 		//driver.findElement(By.id("logout")).click(); no funcionaba por el timeout
-		PO_LoginView.fillForm(driver, "Peter@gmail.com", "123456");
+		PO_LoginView.fillForm(driver, "Pablo@gmail.com", "123456");
 		//efectivamente no nos deja entrar ya que el usuario ya no existe
 		PO_View.checkKey(driver, "errorLog.message", PO_Properties.getSPANISH());
 	}
